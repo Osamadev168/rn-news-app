@@ -8,17 +8,27 @@ import NewsApi from '../APi/NewsApi'
 const Articles = () => {
     const [news, setNews] = useState([])
     const [q, setq] = useState([])
-
+    const [newsSource, setNewsSource] = useState([])
+    const [newsfetched, setNewsfetched] = useState(false)
+    const [showSearch, setShowSearch] = useState(false)
     const [search, setSearch] = useState([])
+    const [getsearch, setgetSearch] = useState(false)
+
     const searchNews = (s) => {
         NewsApi.get(`everything?q=${s}&apiKey=3d77db050aa84253bbe2420817fcd3bf`)
             .then(async function (response) {
                 setq(response.data.articles)
+                console.log(q)
+
+                setgetSearch(true)
             })
             .catch(function (error) {
                 console.log(error)
             })
-        console.log(q)
+            .finally(() => {
+                setShowSearch(false)
+
+            })
 
     }
     const FetchNews = () => {
@@ -31,8 +41,8 @@ const Articles = () => {
             })
 
     }
-    const [newsSource, setNewsSource] = useState([])
-    const [newsfetched, setNewsfetched] = useState(false)
+
+
 
 
     const FetchNewsbySource = (source) => {
@@ -48,6 +58,14 @@ const Articles = () => {
             })
 
 
+    }
+    const renderSearchBox = () => {
+        if (showSearch === false) {
+            setShowSearch(true)
+        }
+        else {
+            setShowSearch(false)
+        }
     }
     const fechNews = () => {
         setNewsfetched(false)
@@ -66,11 +84,23 @@ const Articles = () => {
     return (
         <View style={styles.container}>
             <Text style={{ fontSize: 30, margin: 20 }}>Latest Articles</Text>
-            <View style={{ backgroundColor: 'lightblue', borderRadius: 30, margin: 10, padding: 10 }}>
-                <TextInput style={{ height: 40, width: '100%' }} onChangeText={(s) => setSearch(s)}></TextInput></View>
+            <View style={{ margin: 10 }}>
+                <TouchableOpacity onPress={renderSearchBox}>
+                    <View style={{ height: 30, width: '100%', borderColor: 'redrgba(70, 102, 167, 0.7)', borderWidth: 1, borderRadius: 10, alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(70, 167, 249, 0.2)' }}>
+                        <Text style={{ fontSize: 20, justifyContent: 'space-between' }}>Search</Text>
+                    </View>
+                </TouchableOpacity ></View>
+            {showSearch ? (
+                <View>
+                    <View style={{ backgroundColor: 'lightblue', borderRadius: 30, margin: 10, padding: 10 }}>
+                        <TextInput style={{ height: 40, width: '100%' }} onChangeText={(s) => setSearch(s)}></TextInput></View>
 
-            <Button title='Search' onPress={() => searchNews(search)}>
-            </Button><ScrollView horizontal={true} contentContainerStyle={{ justifyContent: 'space-evenly', margin: 0 }}>
+                    <Button title='Search' onPress={() => searchNews(search)}>
+                    </Button></View>
+            ) : null}
+
+
+            <ScrollView horizontal={true} contentContainerStyle={{ justifyContent: 'space-evenly', margin: 0 }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                     <TouchableOpacity onPress={fechNews}>
                         <View
@@ -107,8 +137,21 @@ const Articles = () => {
                         </View>
                     </TouchableOpacity>
                 </View></ScrollView>
+
             <FlatList
                 data={newsfetched ? newsSource.articles : news}
+                keyExtractor={(item, index) => 'key' + index}
+                initialNumToRender={10}
+                renderItem={({ item }) => (
+                    <View>
+                        <Card item={item} />
+                    </View>
+
+
+                )}
+            />
+            <FlatList
+                data={getsearch ? q : null}
                 keyExtractor={(item, index) => 'key' + index}
                 initialNumToRender={10}
                 renderItem={({ item }) => (
@@ -125,7 +168,7 @@ const Articles = () => {
                 ))}
             </ScrollView> */}
 
-        </View>
+        </View >
     )
 }
 
