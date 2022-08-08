@@ -6,6 +6,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import HomeScreen from '../Screens/HomeScreen';
 import TechNews from '../Screens/TechNews';
 import Articles from '../Screens/Articles';
+import Setting from '../Screens/Setting';
 const Navigation = () => {
 
     const Tab = createMaterialBottomTabNavigator();
@@ -43,6 +44,16 @@ const Navigation = () => {
                         tabBarLabel: 'Articles',
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="book" color={color} size={26} />
+                        ),
+                    }}
+                />
+                <Tab.Screen
+                    name="Settings"
+                    component={Setting}
+                    options={{
+                        tabBarLabel: 'Settings',
+                        tabBarIcon: ({ color }) => (
+                            <MaterialCommunityIcons name="star" color={color} size={26} />
                         ),
                     }}
                 />

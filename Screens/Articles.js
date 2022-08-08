@@ -14,8 +14,8 @@ const Articles = () => {
     const [search, setSearch] = useState([])
     const [getsearch, setgetSearch] = useState(false)
 
-    const searchNews = (s) => {
-        NewsApi.get(`everything?q=${s}&apiKey=3d77db050aa84253bbe2420817fcd3bf`)
+    const searchNews = async (s) => {
+        await NewsApi.get(`everything?q=${s}&apiKey=3d77db050aa84253bbe2420817fcd3bf`)
             .then(async function (response) {
                 setq(response.data.articles)
                 console.log(q)
