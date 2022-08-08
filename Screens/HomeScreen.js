@@ -48,14 +48,16 @@ const HomeScreen = () => {
   };
 
   useEffect(() => {
-    // NewsApi.get('top-headlines?country=us&apiKey=3d77db050aa84253bbe2420817fcd3bf')
-    //     .then(async function (response) {
-    //         setNews(response.data.articles)
-    //         setLoading(false)
-    //     })
-    //     .catch(function (error) {
-    //         console.log(error)
-    //     })
+    NewsApi.get(
+      "top-headlines?country=us&apiKey=3d77db050aa84253bbe2420817fcd3bf"
+    )
+      .then(async function (response) {
+        setNews(response.data.articles);
+        setLoading(false);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }, []);
   return (
     <View style={styles.container}>
